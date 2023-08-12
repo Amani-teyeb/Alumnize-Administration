@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+// routes
+import Router from './routes';
 
-function App() {
+
+// theme
+import ThemeProvider from './theme';
+// components
+import ScrollToTop from './components/scroll-to-top';
+import { StyledChart } from './components/chart';
+import { isUserLoggedIn } from "./Redux/actions";
+// ----------------------------------------------------------------------
+
+export default function App() {
+  const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (!auth.authenticate) {
+      dispatch(isUserLoggedIn());
+    }
+  }, [auth.authenticate]);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider>
+      <ScrollToTop />
+      <StyledChart />
+      <Router />  {/* les differentes paths de barre de menu */}
+    </ThemeProvider>
   );
 }
-
-export default App;
