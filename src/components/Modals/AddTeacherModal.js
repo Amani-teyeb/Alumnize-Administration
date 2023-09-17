@@ -13,26 +13,21 @@ import { useDispatch } from 'react-redux';
 import Iconify from '../iconify';
 import { registerUser } from '../../Redux/actions';
 
-const AddUserModal = ({ children }) => {
+const AddTeacherModal = ({ children }) => {
   const dispatch = useDispatch();
   const [opend, setOpend] = useState(false);
   const [fullWidth, setFullWidth] = useState(true);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
+  const [contactNumber, setContactNumber] = useState('');
   const [password, setPassword] = useState('');
   const [level, setLevel] = useState('');
-  const [amount, setAmount] = useState('');
+  const [moy, setMoy] = useState('');
+  const [advance, setAdvance] = useState('');
+  const [group, setGroup] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const LevelTab = [
-    'première année',
-    'deuxième année',
-    'troisième année',
-    'Quatrième année',
-    'Cinquième année',
-    'sixième année',
-  ];
   const handleOpenDialog = () => {
     setOpend(true);
   };
@@ -40,26 +35,18 @@ const AddUserModal = ({ children }) => {
     setOpend(false);
   };
 
-  const handleLevel = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setLevel(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value : value._id
-    );
-    console.log(event.target.value);
-  };
-
   const handleSubmitDialog = () => {
     const user = {
       firstName,
       lastName,
-      role: 'student',
       level,
       email,
       password,
-      amount,
+      contactNumber,
+      moy,
+      advance,
+      group,
+      role: 'teacher',
     };
     dispatch(registerUser(user));
     setOpend(false);
@@ -105,16 +92,6 @@ const AddUserModal = ({ children }) => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-            <TextField
-              id="filled-basic"
-              label="Amount (TND)"
-              variant="filled"
-              type="number"
-              placeholder="Amount"
-              sx={{ marginBottom: '10px' }}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-            />
             <Stack spacing={3}>
               <TextField name="email" label="Email address" value={email} onChange={(e) => setEmail(e.target.value)} />
 
@@ -135,26 +112,58 @@ const AddUserModal = ({ children }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Stack>
-            <FormControl sx={{ mt: 2, maxWidth: 'xl' }}>
-              <InputLabel htmlFor="max-width">Level</InputLabel>
-              <Select
-                autoFocus
-                label="maxWidth"
-                inputProps={{
-                  name: 'max-width',
-                  id: 'max-width',
-                  defaultValue: 'level',
-                }}
-                value={level}
-                onChange={handleLevel}
-              >
-                {LevelTab.map((item) => (
-                  <MenuItem key={item} value={item}>
-                    {item}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <TextField
+              id="filled-basic"
+              label="Salary (TND)"
+              variant="filled"
+              type="number"
+              placeholder="Salary"
+              sx={{ marginBottom: '10px' }}
+              value={moy}
+              onChange={(e) => setMoy(e.target.value)}
+            />
+            <TextField
+              id="filled-basic"
+              label="Credit (TND)"
+              variant="filled"
+              type="number"
+              placeholder="Credit"
+              sx={{ marginBottom: '10px' }}
+              value={advance}
+              onChange={(e) => setAdvance(e.target.value)}
+            />
+
+            <TextField
+              id="filled-basic"
+              label="Contact Number"
+              variant="filled"
+              type="number"
+              placeholder="Contact Number"
+              sx={{ marginBottom: '10px' }}
+              value={contactNumber}
+              onChange={(e) => setContactNumber(e.target.value)}
+            />
+
+            <TextField
+              id="filled-basic"
+              label="specialization"
+              variant="filled"
+              type="text"
+              placeholder="specialization"
+              sx={{ marginBottom: '10px' }}
+              value={level}
+              onChange={(e) => setLevel(e.target.value)}
+            />
+            <TextField
+              id="filled-basic"
+              label="group"
+              variant="filled"
+              type="text"
+              placeholder="specialization"
+              sx={{ marginBottom: '10px' }}
+              value={group}
+              onChange={(e) => setGroup(e.target.value)}
+            />
           </Box>
         </DialogContent>
         <DialogActions>
@@ -168,4 +177,4 @@ const AddUserModal = ({ children }) => {
   );
 };
 
-export default AddUserModal;
+export default AddTeacherModal;

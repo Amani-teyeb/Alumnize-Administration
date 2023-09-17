@@ -4,7 +4,6 @@ import { alpha, styled } from '@mui/material/styles';
 import { Box, Link, Card, Grid, Avatar, Typography, CardContent } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { Title } from '@mui/icons-material';
 
 // utils
 //
@@ -13,52 +12,71 @@ import { Title } from '@mui/icons-material';
 
 const StyledCardMedia = styled('div')({
   position: 'relative',
-  paddingTop: '0',
+  paddingTop: 'calc(100% * 3 / 4)',
 });
 
 const StyledTitle = styled(Link)({
-  height: 20,
+  height: 30,
   overflow: 'hidden',
   WebkitLineClamp: 2,
   display: '-webkit-box',
   WebkitBoxOrient: 'vertical',
 });
 
+const StyledCover = styled('img')({
+  top: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  position: 'absolute',
+});
+
 // ----------------------------------------------------------------------
 
-VideoCard.propTypes = {
-  course: PropTypes.object.isRequired,
+TeacherCard.propTypes = {
+  theme: PropTypes.object.isRequired,
   index: PropTypes.number,
 };
 
-export default function VideoCard({ course, index }) {
-  const { url, titre, _id, theme } = course;
+export default function TeacherCard({ user }) {
+  const { firstName, lastName, _id, level } = user;
 
   return (
-    <Grid item xs={6} sm={3} margin={2}>
+    <Grid item md={3} mb={4} ml={6}>
       <Card sx={{ position: 'relative', width: '300px', spacing: '4' }}>
-        <StyledCardMedia>
-          <iframe src={url} id={course._id} title={titre} width="100%" />
+        <StyledCardMedia
+          sx={{
+            pt: 'calc(100% * 3 / 5)',
+            '&:after': {
+              top: 0,
+              position: 'absolute',
+              bgcolor: '#ECBDE7',
+            },
+          }}
+        >
+          <StyledCover alt={firstName} src="/assets/icons/teach.jpg" />
         </StyledCardMedia>
 
         <CardContent
           sx={{
-            pt: 4,
-            paddingTop: '0px',
+            pt: 1,
+            bgcolor: '#FAEDF9',
           }}
         >
           <StyledTitle
             color="inherit"
             variant="subtitle2"
             underline="hover"
-            href={`courseDetails/${_id}`}
+            href={`courses/${_id}`}
             sx={{
-              height: 40,
-              color: 'blue',
+              typography: 'h6',
+              height: 30,
+              color: 'black',
             }}
           >
-            {titre}
+            Name : {firstName.concat(' ', lastName)}
           </StyledTitle>
+          <h4>Specialization : {level}</h4>
         </CardContent>
       </Card>
     </Grid>

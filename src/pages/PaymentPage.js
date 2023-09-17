@@ -40,12 +40,10 @@ import PayPicModal from '../components/Modals/PayPicModal';
 
 const TABLE_HEAD = [
   { id: 'firstName', label: ' Name', alignRight: false },
-  { id: 'lastName', label: 'Parent Name ', alignRight: false },
-  { id: 'moy', label: 'last Mark', alignRight: false },
   { id: 'level', label: 'level', alignRight: false },
-  { id: 'group', label: 'Group', alignRight: false },
+  { id: 'payImg', label: 'Pay_Pic', alignRight: false },
+  { id: 'verified', label: 'Is_Verified?', alignRight: false },
   { id: 'contacNumber', label: 'Contact Number', alignRight: false },
-  { id: 'email', label: 'email', alignRight: false },
   { id: '' },
 ];
 
@@ -80,7 +78,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
+export default function PaymentPage() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
 
@@ -197,12 +195,12 @@ export default function UserPage() {
                           _id,
                           firstName,
                           lastName,
-                          parentName,
+                          wichlist,
                           level,
-                          moy,
-                          group,
                           avatarUrl,
-                          email,
+                          isVerified,
+                          payPicture,
+                          payMethod,
                           contactNumber,
                         } = row;
                         const selectedUser = selected.indexOf(firstName) !== -1;
@@ -220,12 +218,21 @@ export default function UserPage() {
                                 </Typography>
                               </Stack>
                             </TableCell>
-                            <TableCell align="left">{parentName}</TableCell>
-                            <TableCell align="left">{moy}</TableCell>
                             <TableCell align="left">{level}</TableCell>
-                            <TableCell align="left">{group}</TableCell>
-                            <TableCell align="left">{contactNumber}</TableCell>
-                            <TableCell align="left">{email}</TableCell>
+                            <TableCell align="left">
+                              <img src={payPicture} alt="img" height={'100px'} width={'80px'} />
+                              <PayPicModal user={row}>
+                                <button>check</button>
+                              </PayPicModal>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Label color={(isVerified === 'false' && 'error') || 'success'}>{isVerified}</Label>
+                            </TableCell>
+                            <TableCell align="left">
+                              <Typography variant="subtitle2" noWrap>
+                                {contactNumber}{' '}
+                              </Typography>
+                            </TableCell>
 
                             <TableCell align="right">
                               <EditUserModal user={row}>
@@ -237,8 +244,8 @@ export default function UserPage() {
                                   />
                                 </IconButton>
                               </EditUserModal>
-                              <IconButton size="large" onClick={() => dispatch(deleteUser({ userId: _id }))}>
-                                <Iconify icon={'eva:trash-2-outline'} sx={{ color: 'error.main' }} />{' '}
+                              <IconButton size="large">
+                                <Iconify icon={'eva:trash-2-outline'} sx={{ color: 'error.main' }} />
                               </IconButton>
                             </TableCell>
                           </TableRow>

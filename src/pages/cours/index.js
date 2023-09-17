@@ -34,7 +34,9 @@ export default function Courses() {
 
   return (
     <>
-      <Container>{/* <TeacherCourse /> */}</Container>
+      <Container>
+        <TeacherCourse />
+      </Container>
     </>
   );
 }

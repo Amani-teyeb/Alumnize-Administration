@@ -17,7 +17,6 @@ import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
 
-
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 270;
@@ -39,7 +38,7 @@ Nav.propTypes = {
 
 export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -57,18 +56,16 @@ export default function Nav({ openNav, onCloseNav }) {
         '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
       }}
     >
-      <Box sx={{ px: 2.5, py:5, display: 'inline-flex' }} />
-      
-     
+      <Box sx={{ px: 2.5, py: 5, display: 'inline-flex' }} />
 
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={account.photoURL} alt="photoURL" />
+            {/* <Avatar src={account.photoURL} alt="photoURL" /> */}
 
             <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {user.fullName}
+              <Typography variant="h5" sx={{ color: 'text.primary' }}>
+                H-tag Academy
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -78,14 +75,12 @@ export default function Nav({ openNav, onCloseNav }) {
           </StyledAccount>
         </Link>
       </Box>
-     
-      <NavSection   sx={{ color:"white" }} data={navConfig}  />
-      
- 
-       {/* liste des donnés de Course ....
+
+      <NavSection sx={{ color: 'white' }} data={navConfig} />
+
+      {/* liste des donnés de Course ....
           data nom de la liste
-          */
-      }
+          */}
 
       <Box sx={{ flexGrow: 1 }} />
 
@@ -103,9 +98,9 @@ export default function Nav({ openNav, onCloseNav }) {
             </Typography>
           </Box>
 
-          <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
+          {/* <Button href="https://material-ui.com/store/items/minimal-dashboard/" target="_blank" variant="contained">
             Upgrade to Pro
-          </Button>
+          </Button> */}
         </Stack>
       </Box>
     </Scrollbar>
@@ -129,7 +124,7 @@ export default function Nav({ openNav, onCloseNav }) {
               bgcolor: 'white',
               boxSizing: 'border-box',
               borderRadius: '5px 0 0 5px',
-              color: 'white'
+              color: 'white',
             },
           }}
         >

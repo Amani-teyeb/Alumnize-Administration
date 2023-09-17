@@ -24,7 +24,7 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-import { deleteUser, getAllCourses, getTeachers, updateUser } from '../Redux/actions';
+import { deleteUser, getAllCourses, getStudents, updateUser, getTeachers } from '../Redux/actions';
 // components
 import Label from '../components/label';
 import Iconify from '../components/iconify';
@@ -33,16 +33,20 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
-import AddUserModal from '../components/Modals/AddUserModal';
+import EditUserModal from '../components/Modals/EditUserModal';
+import AddTeacherModal from '../components/Modals/AddTeacherModal';
+import EditTeacherModal from '../components/Modals/EditTeacherModal';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'firstName', label: ' First Name', alignRight: false },
-  { id: 'lastName', label: 'Last Name', alignRight: false },
-  { id: 'email', label: 'Email', alignRight: false },
-  //   { id: 'salary', label: 'Salary', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'firstName', label: ' Name', alignRight: false },
+  { id: 'lastName', label: 'Parent Name ', alignRight: false },
+  { id: 'moy', label: 'last Mark', alignRight: false },
+  { id: 'level', label: 'level', alignRight: false },
+  { id: 'group', label: 'Group', alignRight: false },
+  { id: 'contacNumber', label: 'Contact Number', alignRight: false },
+  { id: 'email', label: 'email', alignRight: false },
   { id: '' },
 ];
 
@@ -65,14 +69,14 @@ function getComparator(order, orderBy) {
 }
 
 function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
+  const stabilizedThis = array && array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -80,7 +84,7 @@ function applySortFilter(array, comparator, query) {
 export default function UserPage() {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
-  console.log(users);
+
   useEffect(() => {
     dispatch(getTeachers());
   }, []);
@@ -115,18 +119,18 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = users && users.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, firstName) => {
+    const selectedIndex = selected.indexOf(firstName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, firstName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -151,16 +155,16 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(users, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> User | H-tag academy </title>
       </Helmet>
 
       <Container>
@@ -168,11 +172,12 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             Teachers
           </Typography>
-          <AddUserModal>
+          <AddTeacherModal>
+            {' '}
             <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-              New Teacher
-            </Button>
-          </AddUserModal>
+              New Teacher{' '}
+            </Button>{' '}
+          </AddTeacherModal>
         </Stack>
 
         <Card>
@@ -185,67 +190,74 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={users.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
-                <TableBody key={users._id}>
-                  {users.length > 0
-                    ? users.map((user) => {
-                        const selectedUser = selected.indexOf(user) !== -1;
-
+                {users && (
+                  <TableBody>
+                    {' '}
+                    {filteredUsers &&
+                      filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const {
+                          _id,
+                          firstName,
+                          lastName,
+                          level,
+                          moy,
+                          group,
+                          avatarUrl,
+                          email,
+                          advance,
+                          contactNumber,
+                        } = row;
+                        const selectedUser = selected.indexOf(firstName) !== -1;
                         return (
-                          <TableRow hover key={user._id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                          <TableRow hover key={_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                             <TableCell padding="checkbox">
-                              <Checkbox
-                              // checked={selectedUser} onChange={(event) => handleClick(event, name)}
-                              />
+                              <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                             </TableCell>
 
                             <TableCell component="th" scope="row" padding="none">
                               <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar
-                                // alt={name} src={avatarUrl}
-                                />
+                                <Avatar alt={firstName} src={avatarUrl} />
                                 <Typography variant="subtitle2" noWrap>
-                                  {user.firstName}
+                                  {firstName} {lastName}
                                 </Typography>
                               </Stack>
                             </TableCell>
-
-                            <TableCell align="left">{user.lastName}</TableCell>
-
-                            <TableCell align="left">{user.email}</TableCell>
-
-                            {/* <TableCell align="left">{user.salary}</TableCell> */}
-
-                            {/* <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell> */}
+                            <TableCell align="left">{level}</TableCell>
+                            <TableCell align="left">{moy}</TableCell>
+                            <TableCell align="left">{advance}</TableCell>
+                            <TableCell align="left">{group}</TableCell>
+                            <TableCell align="left">{contactNumber}</TableCell>
+                            <TableCell align="left">{email}</TableCell>
 
                             <TableCell align="right">
-                              <IconButton size="large" color="inherit">
-                                <Iconify
-                                  icon={'eva:edit-fill'}
-                                  sx={{ color: 'blue' }}
-                                  // onClick={() => dispatch(updateUser({ userId: user._id, updatedUser}))}
-                                />
-                              </IconButton>
-                              <IconButton size="large" onClick={() => dispatch(deleteUser({ userId: user._id }))}>
-                                <Iconify icon={'eva:trash-2-outline'} sx={{ color: 'error.main' }} />
+                              <EditTeacherModal user={row}>
+                                <IconButton size="large" color="inherit">
+                                  <Iconify
+                                    icon={'eva:edit-fill'}
+                                    sx={{ color: 'blue' }}
+                                    // onClick={() => dispatch(updateUser({ userId: user._id, updatedUser}))}
+                                  />
+                                </IconButton>
+                              </EditTeacherModal>
+                              <IconButton size="large" onClick={() => dispatch(deleteUser({ userId: _id }))}>
+                                <Iconify icon={'eva:trash-2-outline'} sx={{ color: 'error.main' }} />{' '}
                               </IconButton>
                             </TableCell>
                           </TableRow>
                         );
-                      })
-                    : null}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
+                      })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                )}
 
                 {isNotFound && (
                   <TableBody>
@@ -277,7 +289,7 @@ export default function UserPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={users.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -13,6 +13,8 @@ import Cours from './pages/cours';
 import PrivateRoute from './HOC/PrivateRoutes';
 import { CoursePage } from './pages/cours/CoursePage';
 import { CourseDetails } from './pages/cours/CourseDetails';
+import PaymentPage from './pages/PaymentPage';
+import ChatPage from './pages/ChatPage';
 
 // ----------------------------------------------------------------------
 
@@ -33,9 +35,11 @@ export default function Router() {
             { element: <Navigate to="/dashboard/app" />, index: true },
             { path: 'app', element: <DashboardAppPage /> },
             { path: 'user', element: <UserPage /> },
+            { path: 'chat', element: <ChatPage /> },
+            { path: 'payment', element: <PaymentPage /> },
             { path: 'teacher', element: <TeacherPage /> },
             { path: 'cours', element: <Cours /> },
-            { path: 'courses/:slug', element: <CoursePage />, index: true },
+            { path: 'courses/:id', element: <CoursePage />, index: true },
             { path: 'courses/courseDetails/:id', element: <CourseDetails /> },
           ],
         },

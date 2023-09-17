@@ -16,7 +16,8 @@ export const registerUser = (user) => {
           user,
         },
       });
-      dispatch(getStudents());
+      // dispatch(getStudents());
+      dispatch(getTeachers());
     } else {
       dispatch({
         type: userConstants.REGISTER_USER_FAILURE,
@@ -31,7 +32,7 @@ export const getStudents = () => {
     dispatch({ type: userConstants.GET_STUDENTS_REQUEST });
     const res = await axiosInstance.get(`/getUsers`);
 
-    if (res.status === 200) {
+    if (res.status === 201) {
       dispatch({
         type: userConstants.GET_STUDENTS_SUCCESS,
         payload: res.data,
@@ -78,17 +79,18 @@ export const deleteUser = (userId) => {
   };
 };
 
-export const updateUser = ({ _id, user }) => {
+export const updateUser = (theuser) => {
   return async (dispatch) => {
     try {
-      const res = await axiosInstance.post(`/user/editUser`, _id, user);
+      const res = await axiosInstance.post(`/user/editUser`, theuser);
       dispatch({ type: userConstants.UPDATE_USER_REQUEST });
 
-      if (res.status === 200) {
+      if (res.status === 201) {
         dispatch({
           type: userConstants.UPDATE_USER_SUCCESS,
           payload: res.data,
         });
+        console.log(res.data);
       }
       dispatch(getStudents());
     } catch (error) {
