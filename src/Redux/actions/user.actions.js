@@ -61,6 +61,7 @@ export const getTeachers = () => {
 };
 
 export const deleteUser = (userId) => {
+  console.log(userId);
   return async (dispatch) => {
     try {
       const res = await axiosInstance.post(`/user/deleteUser`, userId);
@@ -95,6 +96,55 @@ export const updateUser = (theuser) => {
       dispatch(getStudents());
     } catch (error) {
       dispatch({ type: userConstants.UPDATE_USER_FAILURE });
+    }
+  };
+};
+
+export const addImage = (form) => {
+  return async (dispatch) => {
+    dispatch({ type: userConstants.ADD_IMAGE_REQUEST });
+    const res = await axiosInstance.post(`/homepic/create`, form);
+
+    if (res.status === 201) {
+      dispatch({
+        type: userConstants.ADD_IMAGE_SUCCESS,
+        payload: res.data,
+      });
+    } else {
+      dispatch({ type: userConstants.ADD_IMAGE_FAILURE });
+    }
+  };
+};
+
+export const getImages = () => {
+  return async (dispatch) => {
+    dispatch({ type: userConstants.GET_IMAGES_REQUEST });
+    const res = await axiosInstance.get(`/homepic`);
+
+    if (res.status === 200) {
+      dispatch({
+        type: userConstants.GET_IMAGES_SUCCESS,
+        payload: res.data,
+      });
+    } else {
+      dispatch({ type: userConstants.GET_IMAGES_FAILURE });
+    }
+  };
+};
+
+export const EditImage = (form) => {
+  return async (dispatch) => {
+    dispatch({ type: userConstants.ADD_IMAGE_REQUEST });
+    const res = await axiosInstance.post(`/homepic/update`, form);
+
+    if (res.status === 201) {
+      dispatch({
+        type: userConstants.ADD_IMAGE_SUCCESS,
+        payload: res.data,
+      });
+      dispatch(getImages());
+    } else {
+      dispatch({ type: userConstants.ADD_IMAGE_FAILURE });
     }
   };
 };

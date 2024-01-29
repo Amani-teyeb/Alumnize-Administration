@@ -37,7 +37,6 @@ const EditUserModal = ({ children, user }) => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value : value._id
     );
-    console.log(event.target.value);
   };
   const handleGroup = (event) => {
     const {
@@ -47,7 +46,6 @@ const EditUserModal = ({ children, user }) => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value : value._id
     );
-    console.log(event.target.value);
   };
   const handleVerified = (event) => {
     const {
@@ -57,7 +55,6 @@ const EditUserModal = ({ children, user }) => {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value : value._id
     );
-    console.log(event.target.value);
   };
 
   const handleSubmitDialog = () => {

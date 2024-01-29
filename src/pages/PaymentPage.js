@@ -42,8 +42,11 @@ const TABLE_HEAD = [
   { id: 'firstName', label: ' Name', alignRight: false },
   { id: 'level', label: 'level', alignRight: false },
   { id: 'payImg', label: 'Pay_Pic', alignRight: false },
+  { id: 'payMethod', label: 'payMethod', alignRight: false },
   { id: 'verified', label: 'Is_Verified?', alignRight: false },
   { id: 'contacNumber', label: 'Contact Number', alignRight: false },
+  { id: 'date', label: 'date', alignRight: false },
+  { id: 'courses', label: 'courses', alignRight: false },
   { id: '' },
 ];
 
@@ -198,9 +201,10 @@ export default function PaymentPage() {
                           wichlist,
                           level,
                           avatarUrl,
-                          isVerified,
+                          verified,
                           payPicture,
                           payMethod,
+                          dateUpdatePic,
                           contactNumber,
                         } = row;
                         const selectedUser = selected.indexOf(firstName) !== -1;
@@ -225,13 +229,21 @@ export default function PaymentPage() {
                                 <button>check</button>
                               </PayPicModal>
                             </TableCell>
+                            <TableCell align="left">{payMethod}</TableCell>
                             <TableCell align="left">
-                              <Label color={(isVerified === 'false' && 'error') || 'success'}>{isVerified}</Label>
+                              <Label color={(verified === 'false' && 'error') || 'success'}>{verified}</Label>
                             </TableCell>
                             <TableCell align="left">
                               <Typography variant="subtitle2" noWrap>
                                 {contactNumber}{' '}
                               </Typography>
+                            </TableCell>
+                            <TableCell align="left">{dateUpdatePic}</TableCell>
+                            <TableCell align="left">
+                              {wichlist &&
+                                wichlist.map((e) => {
+                                  return <div>{e.name}</div>;
+                                })}
                             </TableCell>
 
                             <TableCell align="right">
@@ -244,9 +256,6 @@ export default function PaymentPage() {
                                   />
                                 </IconButton>
                               </EditUserModal>
-                              <IconButton size="large">
-                                <Iconify icon={'eva:trash-2-outline'} sx={{ color: 'error.main' }} />
-                              </IconButton>
                             </TableCell>
                           </TableRow>
                         );

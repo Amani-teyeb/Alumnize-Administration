@@ -3,6 +3,7 @@ import { userConstants } from '../actions/constants';
 const initState = {
   users: [],
   user: {},
+  images: [],
   error: null,
   loading: false,
 };
@@ -40,7 +41,26 @@ export default (state = initState, action) => {
       break;
     case userConstants.GET_TEACHERS_FAILURE:
       break;
+    case userConstants.ADD_IMAGE_REQUEST:
+      break;
+    case userConstants.ADD_IMAGE_SUCCESS:
+      state = {
+        ...state,
+      };
+      break;
+    case userConstants.ADD_IMAGE_FAILURE:
+      break;
 
+    case userConstants.GET_IMAGES_REQUEST:
+      break;
+    case userConstants.GET_IMAGES_SUCCESS:
+      state = {
+        ...state,
+        images: action.payload.images,
+      };
+      break;
+    case userConstants.GET_IMAGES_FAILURE:
+      break;
     default:
       return state;
   }

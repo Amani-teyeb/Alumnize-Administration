@@ -21,7 +21,7 @@ import ChatPage from './pages/ChatPage';
 export default function Router() {
   const routes = useRoutes([
     {
-      path: '/',
+      path: '/login',
       element: <LoginPage />,
       index: true,
     },
@@ -45,6 +45,7 @@ export default function Router() {
         },
       ],
     },
+
     {
       element: <SimpleLayout />,
       children: [
